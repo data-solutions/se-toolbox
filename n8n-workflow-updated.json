@@ -1,0 +1,752 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=http://extractors.gazaro.com/extract?extraction_type=discovery&force_query=True&url=https://{{ $node[\"Webhook Listen Domain Check\"].json.body.domain }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 700],
+      "id": "c750d1e1-ec6c-4690-9198-f1b50f591322",
+      "name": "Check Domain Exists in 360"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "domain_crawl_status",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "domain",
+              "keyValue": "={{ $('Webhook Listen Domain Check').item.json.body.domain }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [900, 700],
+      "id": "18efd4c9-050d-4f63-91f1-490cb35e4681",
+      "name": "Check Domain Exists W2P",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "htLD3boq7dwnf71h",
+          "name": "Supabase SE Assistant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "domain-check",
+        "options": {
+          "responseData": "success"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-640, 1300],
+      "id": "b05fbd06-3696-4382-89f5-6008707401ab",
+      "name": "Webhook Listen Domain Check",
+      "webhookId": "e81a8af1-a908-403c-8b4c-dc88eaf3993d"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ff248a4d-412a-4c93-b567-6b336a8a5a21",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "crawlStatus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "crawlStatus"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "=botBlockers",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "14e2886f-78d4-4177-9f2e-b7b16c765a7c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "botBlockers"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "30072b0c-d8f0-438b-83e7-30be400236ff",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "domainProfile",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "domainProfile"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0a0211ec-4599-42da-b3d1-e0457dfb0d91",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "ecommercePlatform",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ecommercePlatform"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "817a3ff5-7ef2-4287-81c3-1246c3806f8b",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "productIdentifiers",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "productIdentifiers"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5d504a49-ec6e-4b03-8152-998396969550",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "eanResponsive",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "eanResponsive"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6d604a59-fc7e-5b04-9263-109507060661",
+                    "leftValue": "={{ $json.check }}",
+                    "rightValue": "clientUsage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "clientUsage"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [20, 840],
+      "id": "a795944f-3355-4ff6-85ba-07b5d5fbda1d",
+      "name": "Switch Domain Check"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      wiser_360: $input.first().json.error === null\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 700],
+      "id": "0b284694-de50-4860-bc62-22061f14a93f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "domain_crawl_status",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "domain",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook Listen Domain Check').item.json.body.domain }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "wiser_360",
+              "fieldValue": "={{ $json.wiser_360 }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [680, 700],
+      "id": "1afe796f-4153-44fe-862b-5eea2edf6bab",
+      "name": "Update 360 value",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "htLD3boq7dwnf71h",
+          "name": "Supabase SE Assistant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [-200, 1300],
+      "id": "972b7686-fd89-4ba8-90ea-1f39a89c9a32",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "const checks = $json.body.checks;\n\nreturn checks.map(check => {\n  return { json: { check } };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-420, 1300],
+      "id": "b06ca46a-8dc2-4a70-aadc-7c34a0f48829",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data || \"\";\n\nconst signatures = [\n  {\n    name: 'Cloudflare',\n    details: 'Cloudflare bot-management / challenge pages',\n    severityScore: 5,\n    patterns: [/cf-ray/i, /cloudflare/i, /__cfduid/i]\n  },\n  {\n    name: 'DataDome',\n    details: 'DataDome JS challenge / captcha',\n    severityScore: 4,\n    patterns: [/datadome/i, /cdn\\.datadome\\.co/i]\n  },\n  {\n    name: 'PerimeterX',\n    details: 'PerimeterX JavaScript shield',\n    severityScore: 5,\n    patterns: [/perimeterx/i, /pxvid/i, /client\\.perimeterx\\.net/i]\n  },\n  {\n    name: 'Akamai Bot Manager',\n    details: 'Akamai bot-defense headers / cookies',\n    severityScore: 5,\n    patterns: [/akamai/i, /abck=/i]\n  },\n  {\n    name: 'Imperva',\n    details: 'Imperva Incapsula WAF',\n    severityScore: 4,\n    patterns: [/imperva/i, /incapsula/i]\n  },\n  {\n    name: 'Google reCAPTCHA v3',\n    details: 'reCAPTCHA v3 scripts on forms',\n    severityScore: 3,\n    patterns: [/grecaptcha\\.execute/i, /recaptcha\\.api\\.js/i]\n  }\n];\n\nconst scoreToLabel = (s) => (s >= 4 ? 'high' : s >= 3 ? 'medium' : 'low');\n\nconst blockers = [];\n\nfor (const sig of signatures) {\n  const detected = sig.patterns.some((re) => re.test(html));\n\n  if (detected) {\n    blockers.push({\n      name: sig.name,\n      severity: scoreToLabel(sig.severityScore),\n      details: sig.details\n    });\n  }\n}\n\nlet overallSeverity = 'none';\n\nif (blockers.length) {\n  const maxScore = Math.max(...blockers.map((b) => {\n    if (b.severity === 'high')   return 5;\n    if (b.severity === 'medium') return 3;\n    return 1;\n  }));\n  overallSeverity = scoreToLabel(maxScore);\n}\n\nreturn [\n  {\n    json: {\n      data: {\n        blockers,\n        overallSeverity\n      }\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 900],
+      "id": "e7804213-a314-4df6-a382-b4a8372a5c57",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "jsCode": "function detectEcommercePlatform(html) {\n  const platforms = [\n    {\n      name: \"Shopify\",\n      patterns: [\n        /cdn\\.shopify\\.com/i,\n        /Shopify/i,\n        /shopify-checkout/i,\n        /x-shopify-stage/i,\n        /x-shopify-request-id/i,\n        /shopify\\.assets/i\n      ]\n    },\n    {\n      name: \"Magento\",\n      patterns: [\n        /\\/static\\/version\\d+\\/frontend/i,\n        /Magento/i,\n        /mage\\/requirejs\\/mixins/i,\n        /Magento_Customer\\/js/i\n      ]\n    },\n    {\n      name: \"PrestaShop\",\n      patterns: [\n        /prestashop/i,\n        /blockcart/i,\n        /ps_checkout/i,\n        /\\/modules\\/.*?\\.js/i\n      ]\n    },\n    {\n      name: \"BigCommerce\",\n      patterns: [\n        /cdn\\.bigcommerce\\.com/i,\n        /stencil-utils/i,\n        /bigcommerce/i\n      ]\n    },\n    {\n      name: \"WooCommerce\",\n      patterns: [\n        /woocommerce/i,\n        /wp-content\\/plugins\\/woocommerce/i,\n        /wc-ajax/i\n      ]\n    },\n    {\n      name: \"Salesforce Commerce Cloud (Demandware)\",\n      patterns: [\n        /demandware\\.static/i,\n        /dw\\/web\\/Dynamic/i,\n        /SalesforceCommerceCloud/i\n      ]\n    },\n    {\n      name: \"Wix\",\n      patterns: [\n        /wix-code-sdk/i,\n        /wix\\.com/i,\n        /Wix\\.Stores/i\n      ]\n    },\n    {\n      name: \"Squarespace\",\n      patterns: [\n        /static\\.squarespace\\.com/i,\n        /sqs-layout/i,\n        /Squarespace/i\n      ]\n    }\n  ];\n\n  for (const platform of platforms) {\n    for (const pattern of platform.patterns) {\n      if (pattern.test(html)) {\n        return platform.name;\n      }\n    }\n  }\n\n  return \"Unknown\";\n}\n\nconst html = $input.first().json.data || '';\nconst platform = detectEcommercePlatform(html);\n\nreturn [\n  {\n    json: {\n      platform,\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 1100],
+      "id": "912f7643-6176-4007-b8d8-3ca1522e358f",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  item.json.w2p_cp = item.json.w2p_cp || false;\n  item.json.surf = item.json.surf || false;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 700],
+      "id": "ed1f53b5-6597-4789-acda-537002c20c6c",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brightdata.com/request",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"zone\": \"web_unlocker\",\n  \"url\": \"https://{{ $node[\"Webhook Listen Domain Check\"].json.body.domain }}\",\n  \"format\": \"raw\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 900],
+      "id": "d4eae80d-80bc-42b9-9847-5af7cd95dd99",
+      "name": "HTTP Request HomePage Unlocker",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "9YjmUFDPiEfBfX29",
+          "name": "Bearer BrightData"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brightdata.com/request",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"zone\": \"web_unlocker\",\n  \"url\": \"https://{{ $node[\"Webhook Listen Domain Check\"].json.body.domain }}\",\n  \"format\": \"raw\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 1100],
+      "id": "d0a3b1a4-709c-4fe6-b9fb-28c4ee60f324",
+      "name": "HTTP Request HomePage Unlocker1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "9YjmUFDPiEfBfX29",
+          "name": "Bearer BrightData"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const domain = $node[\"Webhook Listen Domain Check\"].json.body.domain;\nconst checkType = 'crawlStatus';\n\nconst checkData = {\n  status: \"completed\",\n  on360: $node[\"Code\"].json.wiser_360 || false,\n  onWIT: $json.w2p_cp || false,\n  onSurf: $json.surf || false\n};\n\nreturn [{\n  json: {\n    domain: domain,\n    checkType: checkType,\n    checkData: checkData\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 700],
+      "id": "prepare-crawlstatus-update",
+      "name": "Prepare CrawlStatus Update"
+    },
+    {
+      "parameters": {
+        "jsCode": "const domain = $node[\"Webhook Listen Domain Check\"].json.body.domain;\nconst checkType = 'botBlockers';\n\nconst checkData = {\n  status: \"completed\",\n  blockers: $json.data.blockers || [],\n  overallSeverity: $json.data.overallSeverity || \"low\"\n};\n\nreturn [{\n  json: {\n    domain: domain,\n    checkType: checkType,\n    checkData: checkData\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 900],
+      "id": "prepare-botblockers-update",
+      "name": "Prepare BotBlockers Update"
+    },
+    {
+      "parameters": {
+        "jsCode": "const domain = $node[\"Webhook Listen Domain Check\"].json.body.domain;\nconst checkType = 'ecommercePlatform';\n\nconst checkData = {\n  status: \"completed\",\n  platform: $json.platform || null\n};\n\nreturn [{\n  json: {\n    domain: domain,\n    checkType: checkType,\n    checkData: checkData\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 1100],
+      "id": "prepare-ecommerce-update",
+      "name": "Prepare Ecommerce Update"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "domain_checks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "domain",
+              "keyValue": "={{ $json.domain }}"
+            }
+          ]
+        },
+        "options": {
+          "limit": 1,
+          "sort": {
+            "fields": [
+              {
+                "field": "created_at",
+                "direction": "desc"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [900, 900],
+      "id": "get-existing-record",
+      "name": "Get Existing Record",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "htLD3boq7dwnf71h",
+          "name": "Supabase SE Assistant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Solution simplifiée: passer les données via le node Get Existing Record\n// On utilise $input.first() pour obtenir le résultat de la base de données\n// et on accède au node précédent pour obtenir les données de préparation\n\nconst items = $input.all();\nconst existingRecord = items[0].json;\n\n// Récupérer domain, checkType et checkData du contexte stocké\nconst domain = items[0].json.domain || $node[\"Webhook Listen Domain Check\"].json.body.domain;\n\n// Ces valeurs ont été passées dans la requête Get Existing Record\n// On doit les récupérer depuis le node qui a appelé Get Existing Record\nlet checkType, checkData;\n\ntry {\n  const crawlStatus = $node[\"Prepare CrawlStatus Update\"]?.json;\n  if (crawlStatus) {\n    checkType = crawlStatus.checkType;\n    checkData = crawlStatus.checkData;\n  }\n} catch {}\n\nif (!checkType) {\n  try {\n    const botBlockers = $node[\"Prepare BotBlockers Update\"]?.json;\n    if (botBlockers) {\n      checkType = botBlockers.checkType;\n      checkData = botBlockers.checkData;\n    }\n  } catch {}\n}\n\nif (!checkType) {\n  try {\n    const ecommerce = $node[\"Prepare Ecommerce Update\"]?.json;\n    if (ecommerce) {\n      checkType = ecommerce.checkType;\n      checkData = ecommerce.checkData;\n    }\n  } catch {}\n}\n\nif (!checkType) {\n  throw new Error('Cannot determine checkType from prepare nodes');\n}\n\nif (!existingRecord || !existingRecord.id) {\n  throw new Error(`No domain_checks record found for domain: ${domain}`);\n}\n\n// Fusionner les résultats\nconst existingResults = existingRecord.results || {};\nconst updatedResults = {\n  ...existingResults,\n  [checkType]: checkData\n};\n\n// Calculer le statut global\nconst requestedChecks = $node[\"Webhook Listen Domain Check\"].json.body.checks || [];\nconst completedChecks = Object.keys(updatedResults).filter(\n  key => updatedResults[key].status === 'completed'\n);\n\nconst allCompleted = requestedChecks.every(check => \n  completedChecks.includes(check)\n);\n\nconst globalStatus = allCompleted ? 'completed' : 'checking';\n\nreturn [{\n  json: {\n    recordId: existingRecord.id,\n    domain: domain,\n    updatedResults: updatedResults,\n    status: globalStatus\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 900],
+      "id": "merge-results",
+      "name": "Merge Results"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "domain_checks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.recordId }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "results",
+              "fieldValue": "={{ JSON.stringify($json.updatedResults) }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.status }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ new Date().toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1340, 900],
+      "id": "update-domain-checks",
+      "name": "Update Domain Checks",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "htLD3boq7dwnf71h",
+          "name": "Supabase SE Assistant"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Check Domain Exists in 360": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Domain Exists W2P": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Listen Domain Check": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Domain Check": {
+      "main": [
+        [
+          {
+            "node": "Check Domain Exists in 360",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request HomePage Unlocker",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "HTTP Request HomePage Unlocker1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update 360 value",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update 360 value": {
+      "main": [
+        [
+          {
+            "node": "Check Domain Exists W2P",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch Domain Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Prepare BotBlockers Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Prepare Ecommerce Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Prepare CrawlStatus Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request HomePage Unlocker": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request HomePage Unlocker1": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare CrawlStatus Update": {
+      "main": [
+        [
+          {
+            "node": "Get Existing Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare BotBlockers Update": {
+      "main": [
+        [
+          {
+            "node": "Get Existing Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Ecommerce Update": {
+      "main": [
+        [
+          {
+            "node": "Get Existing Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Existing Record": {
+      "main": [
+        [
+          {
+            "node": "Merge Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Results": {
+      "main": [
+        [
+          {
+            "node": "Update Domain Checks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Domain Checks": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d3ed9bb0199b4cf9a3b525cd3c1fa529768b28e838527ca6f5d6e08fa6e5c8c3"
+  }
+}
